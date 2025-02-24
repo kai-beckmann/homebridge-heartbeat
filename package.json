@@ -1,0 +1,21 @@
+{
+  "name": "homebridge-heartbeat",
+  "version": "1.0.0",
+  "description": "Ein Homebridge-Plugin, das einen periodischen Pulse auslöst, um Automationen in HomeKit anzustoßen.",
+  "main": "index.js",
+  "scripts": {
+    "start": "homebridge"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "heartbeat",
+    "automation",
+    "pulse"
+  ],
+  "engines": {
+    "homebridge": ">=1.0.0",
+    "node": ">=14.0.0"
+  },
+  "author": "Kai Beckmann",
+  "license": "ISC"
+}

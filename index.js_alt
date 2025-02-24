@@ -1,0 +1,40 @@
+'use strict';
+
+let Service, Characteristic;
+module.exports = (api) => {
+  Service = api.hap.Service;
+  Characteristic = api.hap.Characteristic;
+  api.registerAccessory('HeartbeatAccessory', HeartbeatAccessory);
+};
+
+class HeartbeatAccessory {
+  constructor(log, config) {
+    this.log = log;
+    this.name = config.name || 'Heartbeat';
+    this.service = new Service.Switch(this.name);
+    this.state = false;
+    
+    // Initialen Zustand setzen
+    this.service.getCharacteristic(Characteristic.On)
+      .on('get', (callback) => {
+        callback(null, this.state);
+      });
+      
+    // Jede Minute einen Pulse auslösen: kurz einschalten, dann wieder ausschalten
+    setInterval(() => {
+      this.log('Heartbeat: Pulse wird ausgelöst');
+      this.state = true;
+      this.service.getCharacteristic(Characteristic.On).updateValue(this.state);
+      
+      // Nach 500ms wieder ausschalten
+      setTimeout(() => {
+        this.state = false;
+        this.service.getCharacteristic(Characteristic.On).updateValue(this.state);
+      }, 500);
+    }, 20000); // 20000ms = 20 sec
+  }
+  
+  getServices() {
+    return [this.service];
+  }
+}
